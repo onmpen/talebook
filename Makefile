@@ -7,7 +7,7 @@ REPO2 := talebook/calibre-webserver:latest
 TAG1 := talebook/talebook:server-side-render
 TAG2 := talebook/talebook:server-side-render-$(VER)
 
-all: build up
+all: lint-py-fix build up
 
 init:
 	pip3 install -r requirements.txt
