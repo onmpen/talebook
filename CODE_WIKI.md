@@ -91,24 +91,44 @@
 
 ```
 talebook/
-├── app/                          # 前端应用 (Nuxt 3 + Vue 3)
+├── app/                          # 前端应用 (Nuxt 4 + Vue 3)
+│   ├── assets/                   # 静态资源
+│   │   └── css/                  # 样式文件
 │   ├── components/               # Vue 组件
 │   │   ├── AppHeader.vue        # 顶部导航栏
 │   │   ├── AppFooter.vue        # 页脚
+│   │   ├── AppPress.vue         # 公告/新闻组件
 │   │   ├── BookCards.vue        # 图书卡片列表
+│   │   ├── BookCards_Small.vue  # 小图书卡片
 │   │   ├── BookList.vue         # 图书列表
+│   │   ├── ListBook.vue         # 列表图书组件
+│   │   ├── MetaList.vue         # 元数据列表
 │   │   ├── Upload.vue           # 上传组件
 │   │   ├── Loading.vue          # 加载动画
-│   │   └── CaptchaWidget.vue    # 人机验证组件
-│   ├── pages/                    # 页面路由
+│   │   ├── SSLManager.vue       # SSL 管理组件
+│   │   ├── CaptchaWidget.vue    # 人机验证组件
+│   │   ├── ImageCaptchaWidget.vue  # 图片验证码组件
+│   │   └── OpdsImportDialog.vue # OPDS 导入对话框
+│   ├── pages/                    # 页面路由 (Nuxt 自动路由)
 │   │   ├── index.vue            # 首页
 │   │   ├── login.vue            # 登录页
 │   │   ├── signup.vue           # 注册页
 │   │   ├── search.vue           # 搜索页
 │   │   ├── library.vue          # 书库浏览
+│   │   ├── recent.vue           # 最近上架
+│   │   ├── hot.vue              # 热门图书
+│   │   ├── nav.vue              # 导航页
 │   │   ├── book/[bid]/          # 图书详情页
 │   │   │   ├── index.vue        # 详情展示
-│   │   │   └── edit.vue         # 编辑页
+│   │   │   ├── edit.vue         # 编辑页
+│   │   │   └── readtxt.vue      # TXT 阅读
+│   │   ├── [meta]/[name].vue    # 元数据分类页 (作者/出版社/标签等)
+│   │   ├── author.vue           # 作者页
+│   │   ├── publisher.vue        # 出版社页
+│   │   ├── rating.vue           # 评分页
+│   │   ├── tag.vue              # 标签页
+│   │   ├── series.vue           # 系列页
+│   │   ├── format.vue           # 格式页
 │   │   ├── admin/               # 管理后台
 │   │   │   ├── books.vue        # 图书管理
 │   │   │   ├── users.vue        # 用户管理
@@ -128,9 +148,16 @@ talebook/
 │   │   └── main.ts              # 主状态
 │   ├── plugins/                  # 插件
 │   │   └── talebook.js          # 全局工具
+│   ├── utils/                    # 工具函数
+│   │   └── sslValidator.js      # SSL 验证工具
+│   ├── test/                     # 前端测试
+│   │   ├── components/          # 组件测试
+│   │   └── e2e/                 # E2E 测试
 │   ├── nuxt.config.ts            # Nuxt 配置
 │   ├── package.json              # 前端依赖
-│   └── tsconfig.json             # TypeScript 配置
+│   ├── tsconfig.json             # TypeScript 配置
+│   ├── vitest.config.ts          # Vitest 测试配置
+│   └── playwright.config.ts      # Playwright E2E 配置
 │
 ├── webserver/                    # 后端应用 (Tornado + Python)
 │   ├── handlers/                 # HTTP 请求处理器
@@ -139,11 +166,14 @@ talebook/
 │   │   ├── book.py              # 图书相关 API
 │   │   ├── user.py              # 用户相关 API
 │   │   ├── admin.py             # 管理后台 API
+│   │   ├── admin_opds_sources.py # OPDS 源管理
 │   │   ├── meta.py              # 元数据 API
 │   │   ├── opds.py              # OPDS 服务
 │   │   ├── files.py             # 文件下载
 │   │   ├── scan.py              # 扫描导入
-│   │   └── captcha.py           # 人机验证
+│   │   ├── captcha.py           # 人机验证
+│   │   ├── barcode.py           # 条形码扫描
+│   │   └── audio.py             # 音频相关
 │   ├── services/                 # 业务逻辑层
 │   │   ├── __init__.py          # 服务初始化
 │   │   ├── async_service.py     # 异步任务服务
@@ -153,37 +183,56 @@ talebook/
 │   │   ├── autofill.py          # 元数据自动填充
 │   │   ├── batch_add.py         # 批量添加
 │   │   ├── batch_convert.py     # 批量转换
-│   │   ├── scan_service.py      # 扫描服务
-│   │   └── opds_import.py       # OPDS 导入
+│   │   ├── scan.py              # 扫描服务
+│   │   ├── opds_import.py       # OPDS 导入
+│   │   └── background_service.py # 后台服务
 │   ├── plugins/                  # 插件系统
 │   │   ├── meta/                # 元数据插件
 │   │   │   ├── douban.py        # 豆瓣
 │   │   │   ├── baike/           # 百度百科
 │   │   │   ├── xhsd/            # 书伴
-│   │   │   └── youshu/          # 有书
-│   │   └── parser/              # 解析插件
-│   │       └── txt.py           # TXT 解析
-│   ├── webdav/                   # WebDAV 服务
-│   │   ├── server.py            # WebDAV 服务器
-│   │   ├── auth.py              # 认证
-│   │   └── dav_provider.py      # DAV 提供者
-│   ├── podcast/                  # 播客服务
-│   │   ├── feed_builder.py      # RSS Feed 构建
-│   │   └── __init__.py
+│   │   │   ├── youshu/          # 有书
+│   │   │   ├── tomato/          # 番茄小说
+│   │   │   ├── calibre/         # Calibre
+│   │   │   └── ai/              # AI 元数据
+│   │   ├── parser/              # 解析插件
+│   │   │   └── txt.py           # TXT 解析
+│   │   ├── captcha/             # 验证码插件
+│   │   │   ├── base.py          # 验证码基类
+│   │   │   ├── image_captcha.py # 图片验证码
+│   │   │   └── geetest.py       # 极验验证码
+│   │   └── sending/             # 推送插件
+│   │       └── uploader.py      # 推送上传
+│   ├── base/                     # 基础模块
+│   │   ├── __init__.py
+│   │   └── trash_manager.py     # 回收站管理
 │   ├── models.py                 # 数据库模型
 │   ├── settings.py               # 配置管理
 │   ├── constants.py              # 常量定义
 │   ├── utils.py                  # 工具函数
 │   ├── loader.py                 # 配置加载
 │   ├── main.py                   # 主入口
-│   └── i18n.py                   # 国际化
+│   ├── i18n.py                   # 国际化
+│   ├── social_routes.py          # 社交登录路由
+│   ├── version.py                # 版本信息
+│   └── migrate_db.py             # 数据库迁移
 │
 ├── tests/                        # 后端测试
 │   ├── test_main.py             # 主流程测试
 │   ├── test_admin.py            # 管理功能测试
 │   ├── test_upload.py           # 上传测试
 │   ├── test_douban.py           # 豆瓣 API 测试
-│   └── test_service.py          # 服务测试
+│   ├── test_baike.py            # 百度百科测试
+│   ├── test_service.py          # 服务测试
+│   ├── test_models.py           # 模型测试
+│   ├── test_utils.py            # 工具测试
+│   ├── test_ssl_crt.py          # SSL 证书测试
+│   ├── test_txt.py              # TXT 解析测试
+│   └── test_scan.py             # 扫描测试
+│
+├── scripts/                      # 工具脚本
+│   ├── check_i18n_translation_missing.py   # 检查缺失翻译
+│   └── check_i18n_translation_useless.py   # 检查冗余翻译
 │
 ├── conf/                         # 配置文件模板
 │   ├── nginx/                    # Nginx 配置
@@ -197,19 +246,36 @@ talebook/
 │   ├── start.sh                 # 容器启动脚本
 │   └── book/                    # 预置书籍
 │
-├── scripts/                      # 工具脚本
-│   ├── check_i18n_translation_missing.py
-│   └── check_i18n_translation_useless.py
+├── kubernetes/                   # Kubernetes 配置
+│   ├── talebook-deployment.yaml
+│   ├── talebook-service.yaml
+│   ├── douban-rs-api-deployment.yaml
+│   └── douban-rs-api-service.yaml
 │
-├── tools/                        # 开发工具
-│   ├── spider.py                # 爬虫工具
-│   ├── parse_meta.py            # 元数据解析
-│   └── convert_to_audios.py     # 音频转换
+├── .github/                      # GitHub 配置
+│   ├── workflows/               # GitHub Actions
+│   │   ├── build.yml           # Docker 构建
+│   │   ├── ci.yml              # CI 测试
+│   │   └── update-candle-reader.yml
+│   └── ISSUE_TEMPLATE/          # Issue 模板
+│
+├── .planning/                    # 项目规划
+│   ├── codebase/                # 代码库分析
+│   │   ├── ARCHITECTURE.md
+│   │   ├── STACK.md
+│   │   └── STRUCTURE.md
+│   └── todos/                   # 待办事项
+│
+├── .trae/                        # Trae IDE 配置
+│   ├── documents/               # 开发文档
+│   └── rules/                   # 代码规则
 │
 ├── server.py                     # 程序入口
-├── requirements.txt              # Python 依赖
 ├── pyproject.toml               # Python 项目配置
-├── docker-compose.yml           # Docker Compose 配置
+├── requirements.txt              # Python 依赖
+├── Dockerfile                    # Docker 构建文件
+├── docker-compose.yml            # Docker Compose 配置
+├── Makefile                      # Make 命令
 └── README.md                     # 项目说明
 ```
 
@@ -236,7 +302,7 @@ talebook/
 | 技术 | 版本 | 用途 |
 |------|------|------|
 | **Vue** | 3.5.27+ | 前端框架 |
-| **Nuxt** | 4.3.0+ | SSR 框架 |
+| **Nuxt** | 4.3.0+ | SSR 框架 (最新 Nuxt 4) |
 | **Vuetify** | 3.x | UI 组件库 |
 | **Pinia** | 3.0.4+ | 状态管理 |
 | **TypeScript** | Latest | 类型系统 |
@@ -259,9 +325,11 @@ talebook/
 - **百度百科** - 百科全书条目
 - **书伴 (xhsd)** - 图书信息
 - **有书** - 图书元数据
+- **番茄小说** - 小说元数据
 - **Cravatar** - 用户头像
 - **SMTP** - 邮件推送
 - **Google Analytics** - 访问统计
+- **AI API** - AI 元数据填充 (支持 OpenAI/本地模型)
 
 ---
 
@@ -753,9 +821,27 @@ app/
 
 - Logo
 - 搜索框
-- 导航菜单
-- 用户菜单
-- 语言切换
+- 导航菜单 (首页/书库/最近/热门)
+- 用户菜单 (登录/注册/个人中心/管理后台)
+- 语言切换 (中文/英文)
+- 深色模式切换
+
+#### `AppFooter.vue`
+
+页脚组件，包含:
+
+- 友情链接
+- 社交媒体链接
+- 版权信息
+- 自定义 HTML 内容
+
+#### `AppPress.vue`
+
+公告/新闻组件，显示:
+
+- 系统公告
+- 欢迎信息
+- 自定义通知
 
 #### `BookCards.vue`
 
@@ -775,6 +861,28 @@ app/
 </template>
 ```
 
+#### `BookCards_Small.vue`
+
+小型图书卡片，用于侧边栏或紧凑布局。
+
+#### `BookList.vue` / `ListBook.vue`
+
+图书列表组件，支持:
+
+- 列表视图
+- 网格视图切换
+- 排序 (评分/热度/出版时间)
+- 分页加载
+
+#### `MetaList.vue`
+
+元数据列表组件，用于展示:
+
+- 作者列表
+- 出版社列表
+- 标签列表
+- 系列列表
+
 #### `Upload.vue`
 
 文件上传组件，支持:
@@ -782,7 +890,40 @@ app/
 - 拖拽上传
 - 多文件上传
 - 进度显示
-- 格式校验
+- 格式校验 (EPUB/MOBI/PDF/TXT 等)
+- 批量上传
+
+#### `Loading.vue`
+
+加载动画组件:
+
+- 全屏加载
+- 局部加载
+- 自定义提示文字
+
+#### `SSLManager.vue`
+
+SSL 证书管理组件:
+
+- 证书上传
+- 证书状态显示
+- HTTPS 配置
+
+#### `CaptchaWidget.vue` / `ImageCaptchaWidget.vue`
+
+人机验证组件:
+
+- 图片验证码
+- 极验验证码
+- 验证回调
+
+#### `OpdsImportDialog.vue`
+
+OPDS 导入对话框:
+
+- OPDS 源配置
+- 导入进度显示
+- 导入结果反馈
 
 ### 页面路由
 
@@ -791,26 +932,69 @@ app/
 - 随机推荐图书
 - 最新上架图书
 - 热门图书
+- 系统公告
 
-#### 书库 (`/library`)
+#### 书库浏览 (`/library`)
 
-- 分类浏览
-- 排序筛选
+- 全部分类浏览
+- 排序筛选 (评分/热度/出版时间)
 - 分页加载
+- 网格/列表视图切换
+
+#### 最近上架 (`/recent`)
+
+- 按上传时间倒序排列
+- 分页加载
+
+#### 热门图书 (`/hot`)
+
+- 按访问/下载统计排序
+- 支持时间范围筛选
 
 #### 图书详情 (`/book/:bid`)
 
 - 封面展示
-- 元数据信息
-- 操作按钮 (下载/推送/阅读)
+- 元数据信息 (书名/作者/出版社/ISBN/出版日期等)
+- 评分和评论
+- 操作按钮 (下载/推送/阅读/编辑)
 - 相关推荐
+- 访问统计
+
+#### 元数据分类页 (`/[meta]/[name]`)
+
+动态路由，支持:
+
+- `/author/:name` - 作者作品列表
+- `/publisher/:name` - 出版社作品列表
+- `/tag/:name` - 标签相关作品
+- `/rating/:star` - 评分作品列表
+- `/series/:name` - 系列作品列表
+- `/format/:ext` - 指定格式作品
+
+#### 搜索页 (`/search`)
+
+- 关键词搜索
+- 高级搜索 (作者/出版社/标签组合)
+- 搜索结果分页
 
 #### 管理后台 (`/admin/*`)
 
-- 图书管理
-- 用户管理
-- 系统设置
-- 批量导入
+- **图书管理** (`/admin/books`): 图书列表/编辑/删除/批量操作
+- **用户管理** (`/admin/users`): 用户列表/权限设置/激活状态
+- **系统设置** (`/admin/settings`): 站点配置/邮件配置/社交登录配置
+- **批量导入** (`/admin/imports`): 扫描导入/OPDS 导入/进度显示
+
+#### 用户中心 (`/user/*`)
+
+- **个人信息** (`/user/detail`): 头像/昵称/邮箱/Kindle 邮箱设置
+- **阅读历史** (`/user/history`): 阅读记录/下载记录
+
+#### 其他页面
+
+- **登录页** (`/login`): 账号密码登录/社交账号登录
+- **注册页** (`/signup`): 用户注册 (需开启注册功能)
+- **导航页** (`/nav`): 网站导航
+- **安装向导** (`/install`): 首次安装配置向导
 
 ### 状态管理 (Pinia)
 
@@ -872,7 +1056,9 @@ export const useMainStore = defineStore('main', {
 
 ## 服务层
 
-### AsyncService (`services/async_service.py`)
+### 服务层
+
+#### AsyncService (`services/async_service.py`)
 
 异步任务管理服务，基于 Tornado IOLoop:
 
@@ -894,7 +1080,7 @@ class AsyncService:
         return future
 ```
 
-### MailService (`services/mail.py`)
+#### MailService (`services/mail.py`)
 
 邮件推送服务:
 
@@ -924,7 +1110,7 @@ class MailService:
         server.sendmail(CONF['smtp_username'], [user_email], msg.as_string())
 ```
 
-### ConvertService (`services/convert.py`)
+#### ConvertService (`services/convert.py`)
 
 格式转换服务:
 
@@ -949,7 +1135,7 @@ class ConvertService:
         subprocess.run(cmd, check=True)
 ```
 
-### ExtractService (`services/extract.py`)
+#### ExtractService (`services/extract.py`)
 
 封面和目录提取服务:
 
@@ -973,7 +1159,7 @@ class ExtractService:
         return extract_toc_from_epub(book_path)
 ```
 
-### AutofillService (`services/autofill.py`)
+#### AutofillService (`services/autofill.py`)
 
 元数据自动填充服务:
 
@@ -997,7 +1183,7 @@ class AutoFillService:
                 logging.error(f"Failed to fill from {source}: {e}")
 ```
 
-### ScanService (`services/scan_service.py`)
+#### ScanService (`services/scan.py`)
 
 扫描导入服务:
 
@@ -1024,7 +1210,7 @@ class ScanService:
         self.session.commit()
 ```
 
-### OPDSImportService (`services/opds_import.py`)
+#### OPDSImportService (`services/opds_import.py`)
 
 OPDS 导入服务:
 
@@ -1109,6 +1295,14 @@ class BaikeApi:
 
 有书图书元数据插件。
 
+#### 番茄小说插件 (`plugins/meta/tomato/api.py`)
+
+番茄小说元数据插件。
+
+#### AI 元数据插件 (`plugins/meta/ai/api.py`)
+
+基于 AI 的图书元数据填充插件。
+
 ### 解析插件
 
 #### TXT 解析 (`plugins/parser/txt.py`)
@@ -1135,6 +1329,22 @@ def parse_txt(file_path):
         'chapters': chapters
     }
 ```
+
+### 验证码插件
+
+#### 图片验证码 (`plugins/captcha/image_captcha.py`)
+
+生成和验证图片验证码。
+
+#### 极验验证码 (`plugins/captcha/geetest.py`)
+
+集成极验 (Geetest) 人机验证服务。
+
+### 推送插件
+
+#### 推送上传 (`plugins/sending/uploader.py`)
+
+支持推送到第三方设备 (如多看、微信读书等)。
 
 ---
 
@@ -1750,14 +1960,21 @@ npm test
 
 ## 更新日志
 
-### v4.0 (当前版本)
+### v4.x (当前版本)
 
-- 升级到 Nuxt 4 + Vue 3
-- 升级到 Tornado 6.5
-- 支持多语言 (i18n)
-- 新增人机验证
+- 升级到 **Nuxt 4** + Vue 3.5
+- 升级到 **Tornado 6.5**
+- 支持多语言 (i18n) - 中文/英文
+- 新增人机验证 (图片验证码/极验)
 - 新增 OPDS 导入功能
-- 优化 WebDAV 支持
+- 新增 AI 元数据填充
+- 新增番茄小说元数据支持
+- 优化 SSL 证书管理
+- 新增 barcode 条形码扫描
+- 新增音频书支持
+- 优化前端组件 (AppPress/MetaList 等)
+- 新增 E2E 测试 (Playwright)
+- 新增组件单元测试 (Vitest)
 
 ### v3.x
 
