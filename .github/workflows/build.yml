@@ -85,12 +85,6 @@ jobs:
           platforms: ${{ steps.platforms.outputs.platforms }}
           labels: ${{ steps.meta.outputs.labels }}
           push: ${{ github.event_name != 'pull_request' }}
-          cache-from: |
-            type=gha
-            type=registry,ref=${{ env.REGISTRY }}/talebook/talebook:latest
-          cache-to: |
-            type=gha,mode=min
-            type=inline,mode=min
           provenance: false
           tags: |
             ${{ steps.meta.outputs.tags }}
@@ -108,12 +102,6 @@ jobs:
           platforms: ${{ steps.platforms.outputs.platforms }}
           labels: ${{ steps.meta.outputs.labels }}
           push: ${{ github.event_name != 'pull_request' }}
-          cache-from: |
-            type=gha
-            type=registry,ref=${{ env.REGISTRY }}/talebook/talebook:server-side-render
-          cache-to: |
-            type=gha,mode=min
-            type=inline,mode=min
           provenance: false
           tags: |
             ${{ startsWith(github.ref, 'refs/tags/') && format('{0}/{1}:server-side-render', env.REGISTRY, env.IMAGE_NAME) || '' }}
