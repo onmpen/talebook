@@ -124,10 +124,11 @@ RUN rm -f /etc/nginx/sites-enabled/default /var/www/html -rf && \
     echo "VERSION = \"$GIT_VERSION\"" > webserver/version.py && \
     echo "ARCH = \"$TARGETARCH$TARGETVARIANT\"" >> webserver/version.py && \
     echo 'settings = {}' > /data/books/settings/auto.py && \
-    chmod a+w /data/books/settings/auto.py && \
-    rm -f /data/books/library/metadata.db.lock /data/books/library/metadata_db_lock* && \
-    calibredb add --library-path=/data/books/library/ -r docker/book/ && \
-    python3 server.py --syncdb  && \
+    chmod a+w /data/books/settings/auto.py
+
+RUN calibredb add --library-path=/data/books/library/ -r docker/book/
+
+RUN python3 server.py --syncdb  && \
     python3 server.py --update-config  && \
     rm -f webserver/*.pyc && \
     rm -rf app/src && \
