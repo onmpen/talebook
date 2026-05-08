@@ -14,9 +14,13 @@ init:
 	#python3 -m pip install --upgrade pip
 	#uv sync
 
-build: test
+build: test build-spa build-ssr
+
+build-spa:
 	docker build --no-cache=false --build-arg BUILD_COUNTRY=CN --build-arg GIT_VERSION=$(VER) \
 		-f Dockerfile -t $(IMAGE) -t $(REPO1) --target production -t $(REPO2) .
+
+build-ssr:
 	docker build --no-cache=false --build-arg BUILD_COUNTRY=CN --build-arg GIT_VERSION=$(VER) \
 		-f Dockerfile -t $(TAG1) -t $(TAG2) --target production-ssr .
 
