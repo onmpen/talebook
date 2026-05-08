@@ -122,14 +122,13 @@ COPY --from=builder /app-static/ /var/www/talebook/app/
 COPY --from=builder /app-static/dist/logo/ /data/books/logo/
 
 RUN rm -f /etc/nginx/sites-enabled/default /var/www/html -rf && \
+    cd /var/www/talebook/ && \
     echo "VERSION = \"$GIT_VERSION\"" > webserver/version.py && \
     echo "ARCH = \"$TARGETARCH$TARGETVARIANT\"" >> webserver/version.py && \
     echo 'settings = {}' > /data/books/settings/auto.py && \
-    chmod a+w /data/books/settings/auto.py
-
-RUN calibredb add --library-path=/data/books/library/ -r docker/book/
-
-RUN python3 server.py --syncdb  && \
+    chmod a+w /data/books/settings/auto.py && \
+    calibredb add --library-path=/data/books/library/ -r docker/book/ && \
+    python3 server.py --syncdb  && \
     python3 server.py --update-config  && \
     rm -f webserver/*.pyc && \
     rm -rf app/src && \
