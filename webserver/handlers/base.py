@@ -9,13 +9,13 @@ import os
 import threading
 import time
 from collections import defaultdict
-from webserver.i18n import _
 
 from jinja2 import Environment, FileSystemLoader
 from sqlalchemy import func as sql_func
 from tornado import web
 
 from webserver import loader, utils
+from webserver.i18n import _
 
 # import social_tornado.handlers
 from webserver.models import Item, Message, Reader
