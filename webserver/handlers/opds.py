@@ -10,7 +10,7 @@ import hashlib
 import sys
 from collections import defaultdict
 from functools import partial
-from gettext import gettext as _
+from webserver.i18n import _
 from itertools import repeat
 
 from calibre import guess_type

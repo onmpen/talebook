@@ -6,7 +6,7 @@ import logging
 import os
 import re
 import zipfile
-from gettext import gettext as _
+from webserver.i18n import _
 
 from tornado import web
 

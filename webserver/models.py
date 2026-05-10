@@ -7,7 +7,7 @@ import json
 import logging
 import os
 import time
-from gettext import gettext as _
+from webserver.i18n import _
 
 import bcrypt
 from social_sqlalchemy.storage import JSONType, SQLAlchemyMixin
