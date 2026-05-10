@@ -8,7 +8,7 @@ OPDS 源配置管理 Handler
 import datetime
 import logging
 import traceback
-from gettext import gettext as _
+from webserver.i18n import _
 
 import tornado
 

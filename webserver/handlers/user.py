@@ -5,7 +5,7 @@ import datetime
 import hashlib
 import logging
 import re
-from gettext import gettext as _
+from webserver.i18n import _
 
 import tornado.escape
 from tornado import web

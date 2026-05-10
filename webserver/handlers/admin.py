@@ -10,7 +10,7 @@ import subprocess
 import tempfile
 import traceback
 import uuid
-from gettext import gettext as _
+from webserver.i18n import _
 
 import tornado
 

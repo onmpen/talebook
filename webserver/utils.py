@@ -3,7 +3,7 @@
 
 
 import datetime
-from gettext import gettext as _
+from webserver.i18n import _
 
 
 class SimpleBookFormatter:

@@ -6,7 +6,7 @@ import os
 import subprocess
 import time
 import traceback
-from gettext import gettext as _
+from webserver.i18n import _
 
 import psutil
 

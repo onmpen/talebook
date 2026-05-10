@@ -9,7 +9,7 @@ import os
 import threading
 import time
 from collections import defaultdict
-from gettext import gettext as _
+from webserver.i18n import _
 
 from jinja2 import Environment, FileSystemLoader
 from sqlalchemy import func as sql_func
