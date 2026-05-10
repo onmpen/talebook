@@ -15,7 +15,7 @@ from sqlalchemy import func as sql_func
 from tornado import web
 
 from webserver import loader, utils
-from webserver.i18n import _
+from webserver.i18n import _, set_language
 
 # import social_tornado.handlers
 from webserver.models import Item, Message, Reader
@@ -202,15 +202,9 @@ class BaseHandler(web.RequestHandler):
         self.should_be_invited()
 
     def set_i18n(self):
-        return
-        # TODO set correct language package
-        # import gettext
-        # accept = self.request.headers.get("Accept-Language", "")
-        # langs = [v.strip().split(";")[0] for v in accept.split(",") if v.strip()]
-        # logging.debug("choose lang: %s" % langs)
-        # if not langs: langs = ["zh_CN"]
-        # lang = gettext.translation('messages', localedir=CONF['i18n_path'], languages=langs, fallback=True)
-        # lang.install(unicode=True)
+        lang = self.get_cookie("i18n_redirected", None)
+        if lang:
+            set_language(lang)
 
     def initialize(self):
         ScopedSession = self.settings["ScopedSession"]
