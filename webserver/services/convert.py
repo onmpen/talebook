@@ -143,7 +143,7 @@ class ConvertService(AsyncService):
         if task:
             BackgroundService().complete_task(task.id)
         if not ok:
-            self.add_msg(user_id, "danger", "[%s]文件格式转换失败！请查看日志，或前往ISSUE页面反馈" % service_item)
+            self.add_msg(user_id, "danger", "[%s]文件格式转换失败！请查看日志，或前往项目ISSUE页面反馈" % service_item)
             return
 
         with open(new_path, "rb") as f:
