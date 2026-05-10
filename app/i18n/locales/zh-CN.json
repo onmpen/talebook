@@ -141,8 +141,6 @@
     "deleteSuccess": "删除成功",
     "deleteFailed": "删除失败",
     "confirmDelete": "确定要删除这本书吗？",
-    "addToFavorites": "收藏",
-    "removeFromFavorites": "取消收藏",
     "wantToRead": "待读",
     "removeFromWantToRead": "取消待读",
     "setAsReading": "设为在读",

@@ -137,8 +137,6 @@
     "deleteSuccess": "Deleted successfully",
     "deleteFailed": "Delete failed",
     "confirmDelete": "Are you sure you want to delete this book?",
-    "addToFavorites": "Add to Favorites",
-    "removeFromFavorites": "Remove from Favorites",
     "wantToRead": "Want to Read",
     "removeFromWantToRead": "Remove from Want to Read",
     "setAsReading": "Set as Reading",
