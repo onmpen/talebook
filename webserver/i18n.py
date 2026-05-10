@@ -116,10 +116,6 @@ def _load_catalog(lang: str) -> Dict[str, str]:
     if lang in _catalog_cache:
         return _catalog_cache[lang]
 
-    if lang == "zh":
-        _catalog_cache[lang] = {}
-        return _catalog_cache[lang]
-
     base_dir = os.path.join(os.path.dirname(__file__), "i18n")
     file_path = os.path.join(base_dir, f"{lang}.json")
     if not os.path.exists(file_path):
