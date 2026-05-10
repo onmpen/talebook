@@ -47,8 +47,13 @@ class Index(BaseHandler):
 
     @js
     def get(self):
-        cnt_random = min(int(self.get_argument("random", 8)), 30)
-        cnt_recent = min(int(self.get_argument("recent", 10)), 30)
+        # 从配置中获取首页设置，如果未设置则使用默认值
+        setting_random_count = CONF.get("MAIN_PAGE_RANDOM_COUNT", 12)
+        setting_recent_count = CONF.get("MAIN_PAGE_RECENT_COUNT", 12)
+        
+        # 允许通过 URL 参数覆盖配置（用于兼容旧接口），但不超过配置值
+        cnt_random = min(int(self.get_argument("random", setting_random_count)), setting_random_count)
+        cnt_recent = min(int(self.get_argument("recent", setting_recent_count)), 200)
 
         # nav = "index"
         # title = _(u"全部书籍")
@@ -70,9 +75,11 @@ class Index(BaseHandler):
                 ids = [book_id for book_id in ids if book_id not in private_book_ids]
 
         if ids:
-            random_ids = random.sample(ids, min(cnt_random, len(ids)))
-            random_books = [b for b in self.get_books(ids=random_ids)]
-            random_books.sort(key=lambda x: x["id"], reverse=True)
+            # 如果配置为 0，则不显示随机推荐
+            if cnt_random > 0:
+                random_ids = random.sample(ids, min(cnt_random, len(ids)))
+                random_books = [b for b in self.get_books(ids=random_ids)]
+                random_books.sort(key=lambda x: x["id"], reverse=True)
 
             ids.sort(reverse=True)
             # 确保不会尝试从空列表中取样

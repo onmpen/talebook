@@ -554,7 +554,10 @@
         "geetestCaptchaKey": "GeeTest Captcha Key",
         "trashCalibreSize": "Calibre Trash Size",
         "trashUploadSize": "Upload Temp Directory Size",
-        "trashUnknown": "Unknown"
+        "trashUnknown": "Unknown",
+        "mainPageRandomCount": "Random Books Count (0 to hide)",
+        "mainPageRecentCount": "New Books Count",
+        "defaultPageSize": "Book List Page Size"
       },
       "option": {
         "ssl": "SSL",

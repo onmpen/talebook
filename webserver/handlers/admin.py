@@ -373,6 +373,10 @@ class AdminSettings(BaseHandler):
             "GEETEST_CAPTCHA_ID",
             "GEETEST_CAPTCHA_KEY",
             "DEVICES",
+            # 首页设置
+            "MAIN_PAGE_RANDOM_COUNT",
+            "MAIN_PAGE_RECENT_COUNT",
+            "DEFAULT_PAGE_SIZE",
         ]
 
         args = loader.SettingsLoader()

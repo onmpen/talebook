@@ -622,11 +622,13 @@ class ListHandler(BaseHandler):
 
     def render_book_list(self, all_books, ids=None, title=None, sort_by_id=False):
         start = self.get_argument_start()
+        max_size = CONF.get("DEFAULT_PAGE_SIZE", 60)
         try:
             size = int(self.get_argument("size"))
         except:
-            size = 60
-        delta = min(max(size, 60), 100)
+            # 从配置中获取分页大小，如果未设置则使用默认值 60
+            size = int(CONF.get("DEFAULT_PAGE_SIZE", 60))
+        delta = min(max(size, 60), max_size)
 
         private_book_ids = self._get_private_book_ids()
         if ids:
