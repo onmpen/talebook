@@ -6,7 +6,7 @@
 
 import datetime
 import logging
-from gettext import gettext as _
+from webserver.i18n import _
 
 from webserver import loader
 from webserver.handlers.base import BaseHandler, js

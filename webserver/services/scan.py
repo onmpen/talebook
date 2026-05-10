@@ -6,7 +6,7 @@ import hashlib
 import logging
 import os
 import time
-from gettext import gettext as _
+from webserver.i18n import _
 
 from webserver import utils
 from webserver.models import Item, ScanFile

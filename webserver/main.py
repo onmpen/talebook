@@ -5,7 +5,7 @@ import logging
 import os
 import re
 import sys
-from gettext import gettext as _
+from webserver.i18n import _
 
 import tornado.httpserver
 import tornado.ioloop
