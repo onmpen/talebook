@@ -453,7 +453,7 @@ class Device(Base, SQLAlchemyMixin):
         }
 
 
-class ReadingState(Base):
+class ReadingState(Base, SQLAlchemyMixin):
     __tablename__ = "reading_state"
 
     book_id = Column(Integer, primary_key=True)
